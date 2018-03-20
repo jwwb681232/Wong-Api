@@ -76,7 +76,7 @@ return [
         ],
 
         'merchants' => [
-            'driver' => 'eloquent',
+            'driver' => 'EloquentMerchantUser',
             'model' => App\Models\MerchantUser::class,
         ],
 

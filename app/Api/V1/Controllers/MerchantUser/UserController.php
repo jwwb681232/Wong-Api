@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    public function show()
+    public function register()
     {
-        return response(['error' => 0], 200);
+        return response(
+            auth()->guard('merchant')->attempt(['user_name' => 'wangxiao', 'user_mobile' => 18871478079])
+        );
     }
 }

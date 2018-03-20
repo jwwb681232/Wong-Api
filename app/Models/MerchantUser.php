@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class MerchantUser extends Authenticatable
+class MerchantUser extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
