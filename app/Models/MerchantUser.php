@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable implements JWTSubject
+class MerchantUser extends Authenticatable
 {
     use Notifiable;
 
@@ -14,7 +13,7 @@ class User extends Authenticatable implements JWTSubject
      * 表名
      * @var string
      */
-    protected $table = 'wong_users';
+    protected $table = 'wong_merchant_users';
 
 
     /**
