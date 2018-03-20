@@ -9,6 +9,9 @@ class MerchantUser extends Authenticatable
 {
     use Notifiable;
 
+    protected $guard = 'merchant';
+
+
     /**
      * 表名
      * @var string
