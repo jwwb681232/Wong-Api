@@ -20,5 +20,9 @@ use Illuminate\Http\Request;
 $api = app(Dingo\Api\Routing\Router::class);
 
 $api->version('v1', function ($api) {
-    $api->get('users/{id}', 'App\Api\Controllers\UserController@show');
+
+    $api->group(['middleware'=>'api','prefix'=>'users'],function ($api){
+        $api->post('register','App\Api\V1\Controllers\User\UserController@register');
+        $api->post('login',   'App\Api\V1\Controllers\User\UserController@login');
+    });
 });
