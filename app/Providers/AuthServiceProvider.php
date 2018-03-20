@@ -2,9 +2,10 @@
 
 namespace App\Providers;
 
+use Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-
+use App\Auth\EloquentMerchantUserProvider;
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -24,7 +25,9 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
+        Auth::provider('EloquentMerchantUser', function($app, array $config) {
+            return new EloquentMerchantUserProvider($app['hash'], $config['model']);
+        });
         //
     }
 }

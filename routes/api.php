@@ -25,4 +25,9 @@ $api->version('v1', function ($api) {
         $api->post('register','App\Api\V1\Controllers\User\UserController@register');
         $api->post('login',   'App\Api\V1\Controllers\User\UserController@login');
     });
+
+    $api->group(['middleware'=>'api','prefix'=>'merchant'],function ($api){
+        $api->post('register','App\Api\V1\Controllers\MerchantUser\UserController@register');
+        $api->post('login',   'App\Api\V1\Controllers\MerchantUser\UserController@login');
+    });
 });
