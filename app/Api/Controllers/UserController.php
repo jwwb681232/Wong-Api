@@ -8,6 +8,6 @@ class UserController extends Controller
 {
     public function show()
     {
-        return $this->response->error('This is an error.', 404);
+        return response(['error'=>0],200);
     }
 }
