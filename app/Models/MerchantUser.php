@@ -36,6 +36,13 @@ class MerchantUser extends Authenticatable implements JWTSubject
         'password',
     ];
 
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'user_name', 'user_mobile','user_password','user_add_time'
+    ];
+
 
     public $timestamps = false;
 
@@ -56,9 +63,4 @@ class MerchantUser extends Authenticatable implements JWTSubject
     {
         return [];
     }
-
-    /*public function getAuthIdentifierName()
-    {
-
-    }*/
 }
