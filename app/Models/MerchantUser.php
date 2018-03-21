@@ -45,7 +45,7 @@ class MerchantUser extends Authenticatable implements JWTSubject
      */
     public function getJWTIdentifier()
     {
-        return $this->primaryKey;
+        return $this->getKey();
     }
 
     /**
@@ -56,4 +56,9 @@ class MerchantUser extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    /*public function getAuthIdentifierName()
+    {
+
+    }*/
 }
