@@ -13,21 +13,20 @@ use Illuminate\Http\Request;
 |
 */
 
-/*Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
-
 $api = app(Dingo\Api\Routing\Router::class);
 
 $api->version('v1', function ($api) {
 
     $api->group(['middleware'=>'api','prefix'=>'users'],function ($api){
-        $api->post('register','App\Api\V1\Controllers\User\UserController@register');
-        $api->post('login',   'App\Api\V1\Controllers\User\UserController@login');
+        $api->post('login',   'App\Api\V1\Controllers\User\AuthController@login');
+        $api->post('register','App\Api\V1\Controllers\User\AuthController@register');
     });
 
     $api->group(['middleware'=>'api','prefix'=>'merchant'],function ($api){
-        $api->post('register','App\Api\V1\Controllers\MerchantUser\UserController@register');
-        $api->post('login',   'App\Api\V1\Controllers\MerchantUser\UserController@login');
+        $api->post('auth/login',   'App\Api\V1\Controllers\MerchantUser\AuthController@login');
+        $api->post('auth/register','App\Api\V1\Controllers\MerchantUser\AuthController@register');
+
+        $api->get('profile/me',   'App\Api\V1\Controllers\MerchantUser\ProfileController@me');
+
     });
 });
