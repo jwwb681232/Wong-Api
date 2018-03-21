@@ -10,6 +10,9 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
+    protected $guard = 'api';
+
+
     /**
      * 表名
      * @var string
@@ -33,6 +36,13 @@ class User extends Authenticatable implements JWTSubject
         'password',
     ];
 
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'user_name', 'user_mobile','user_password','user_add_time'
+    ];
+
 
     public $timestamps = false;
 
@@ -42,7 +52,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getJWTIdentifier()
     {
-        return $this->primaryKey;
+        return $this->getKey();
     }
 
     /**

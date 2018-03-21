@@ -18,8 +18,10 @@ $api = app(Dingo\Api\Routing\Router::class);
 $api->version('v1', function ($api) {
 
     $api->group(['middleware'=>'api','prefix'=>'users'],function ($api){
-        $api->post('login',   'App\Api\V1\Controllers\User\AuthController@login');
-        $api->post('register','App\Api\V1\Controllers\User\AuthController@register');
+        $api->post('auth/login',   'App\Api\V1\Controllers\User\AuthController@login');
+        $api->post('auth/register','App\Api\V1\Controllers\User\AuthController@register');
+
+        $api->get('profile/me',   'App\Api\V1\Controllers\User\ProfileController@me');
     });
 
     $api->group(['middleware'=>'api','prefix'=>'merchant'],function ($api){
