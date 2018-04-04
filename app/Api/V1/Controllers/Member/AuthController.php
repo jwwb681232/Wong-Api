@@ -60,13 +60,93 @@ class AuthController extends Controller
         return response($response);*/
     }
 
+    /**
+     * @SWG\Post(path="/index.php/api/employee/auth/register/fb",
+     *   tags={"employer/auth"},
+     *   summary="Facebook注册",
+     *   description="Facebook注册",
+     *   operationId="register/fb",
+     *   consumes={"application/x-www-form-urlencoded"},
+     *   @SWG\Parameter(in="formData",  name="name",type="string",  description="姓名", required=true),
+     *   @SWG\Parameter(in="formData",  name="email",type="string",  description="邮箱", required=true),
+     *   @SWG\Parameter(in="formData",  name="nric_no",type="string",  description="身份证号", required=true),
+     *   @SWG\Parameter(in="formData",  name="mobile_no",type="string",  description="电话号码", required=true),
+     *   @SWG\Parameter(in="formData",  name="school",type="integer",  description="学校id", required=true),
+     *   @SWG\Parameter(in="formData",  name="social_access_token",type="string",  description="第三方Token", required=true),
+     *   @SWG\Parameter(in="formData",  name="social_fb_id",type="string",  description="第三方id", required=true),
+     *   @SWG\Parameter(in="formData",  name="platform",type="string",  description="注册平台（1：ios，2：android，3：web）", required=true),
+     *   @SWG\Parameter(in="header",  name="Content-Type",  type="string",  description="application/x-www-form-urlencoded", default="application/x-www-form-urlencoded",required=true),
+     *   @SWG\Parameter(in="header",  name="Accept",  type="string",  description="版本号", default="application/x.yyjobs-api.v1+json",required=true),
+     *   @SWG\Response(response="403", description="无权限"),
+     *   @SWG\Response(response="500", description=""),
+     * )
+     */
+    public function registerForFacebook()
+    {
+        $employeeRep = app(EmployeeRepository::class);
+        $res = $employeeRep->registerForFacebook(request()->all());
+        if ($res['error']){
+            return apiReturn([], 403, $res['msg']);
+        }
+        return apiReturn($res['data']);
+    }
+
+    /**
+     * @SWG\Post(path="/index.php/api/employee/auth/register/google",
+     *   tags={"employer/auth"},
+     *   summary="google注册",
+     *   description="google注册",
+     *   operationId="register/google",
+     *   consumes={"application/x-www-form-urlencoded"},
+     *   @SWG\Parameter(in="formData",  name="name",type="string",  description="姓名", required=true),
+     *   @SWG\Parameter(in="formData",  name="email",type="string",  description="邮箱", required=true),
+     *   @SWG\Parameter(in="formData",  name="nric_no",type="string",  description="身份证号", required=true),
+     *   @SWG\Parameter(in="formData",  name="mobile_no",type="string",  description="电话号码", required=true),
+     *   @SWG\Parameter(in="formData",  name="school",type="integer",  description="学校id", required=true),
+     *   @SWG\Parameter(in="formData",  name="social_access_token",type="string",  description="第三方Token", required=true),
+     *   @SWG\Parameter(in="formData",  name="social_google_id",type="string",  description="第三方id", required=true),
+     *   @SWG\Parameter(in="formData",  name="platform",type="string",  description="注册平台（1：ios，2：android，3：web）", required=true),
+     *   @SWG\Parameter(in="header",  name="Content-Type",  type="string",  description="application/x-www-form-urlencoded", default="application/x-www-form-urlencoded",required=true),
+     *   @SWG\Parameter(in="header",  name="Accept",  type="string",  description="版本号", default="application/x.yyjobs-api.v1+json",required=true),
+     *   @SWG\Response(response="403", description="无权限"),
+     *   @SWG\Response(response="500", description=""),
+     * )
+     */
+    public function registerForGoogle()
+    {
+        $employeeRep = app(EmployeeRepository::class);
+        $res = $employeeRep->registerForGoogle(request()->all());
+        if ($res['error']){
+            return apiReturn([], 403, $res['msg']);
+        }
+        return apiReturn($res['data']);
+    }
+
+    /**
+     * @SWG\Post(path="/index.php/api/employee/auth/login",
+     *   tags={"employer/auth"},
+     *   summary="登录",
+     *   description="登录",
+     *   operationId="login",
+     *   consumes={"application/x-www-form-urlencoded"},
+     *   @SWG\Parameter(in="formData",  name="nric_no",type="string",  description="身份证号", required=true),
+     *   @SWG\Parameter(in="formData",  name="password",type="string",  description="密码", required=true),
+     *   @SWG\Parameter(in="header",  name="Content-Type",  type="string",  description="application/x-www-form-urlencoded", default="application/x-www-form-urlencoded",required=true),
+     *   @SWG\Parameter(in="header",  name="Accept",  type="string",  description="版本号", default="application/x.yyjobs-api.v1+json",required=true),
+     *   @SWG\Response(response="403", description="无权限"),
+     *   @SWG\Response(response="500", description=""),
+     * )
+     */
     public function login()
     {
-        $token = auth()->guard('member')->attempt(request()->all());
 
-        $response = ['status' => 'Success', 'data' => $token, 'message' => 'Request Success!'];
+        $employeeRep = app(EmployeeRepository::class);
+        $res = $employeeRep->login(request()->all());
+        if ($res['error']){
+            return apiReturn([], 403, $res['msg']);
+        }
+        return apiReturn($res['data']);
 
-        return response($response);
     }
 
     /**

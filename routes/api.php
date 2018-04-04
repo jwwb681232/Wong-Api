@@ -18,8 +18,9 @@ $api = app(Dingo\Api\Routing\Router::class);
 $api->version('v1', function ($api) {
 
     $api->group(['middleware'=>'api','prefix'=>'employee'],function ($api){
-        $api->post('auth/login',   'App\Api\V1\Controllers\Member\AuthController@login');
         $api->post('auth/register','App\Api\V1\Controllers\Member\AuthController@register');
+        $api->post('auth/register/fb','App\Api\V1\Controllers\Member\AuthController@registerForFacebook');
+        $api->post('auth/login',   'App\Api\V1\Controllers\Member\AuthController@login');
         $api->post('auth/apply','App\Api\V1\Controllers\Member\AuthController@applyEmployer');
 
         $api->get('profile/me',   'App\Api\V1\Controllers\Member\ProfileController@me');

@@ -12,7 +12,8 @@
         "laravel/tinker": "~1.0",
         "prettus/l5-repository": "^2.6",
         "tymon/jwt-auth": "1.0.0-rc2",
-        "zircote/swagger-php": "^2.0"
+        "zircote/swagger-php": "^2.0",
+        "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
