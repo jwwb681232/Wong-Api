@@ -21,12 +21,24 @@ class ProfileController extends Controller
         //return response(auth()->guard('merchant')->tokenById(1));
     }
 
-    public function me()
+
+    /**
+     * @SWG\Get(path="/index.php/api/employee/profile/detail",
+     *   tags={"employee/profile"},
+     *   summary="用户详情",
+     *   description="用户详情",
+     *   operationId="detail",
+     *   consumes={"application/x-www-form-urlencoded"},
+     *   @SWG\Parameter(in="header",  name="Content-Type",  type="string",  description="application/x-www-form-urlencoded", default="application/x-www-form-urlencoded",required=true),
+     *   @SWG\Parameter(in="header",  name="Accept",  type="string",  description="版本号", default="application/x.yyjobs-api.v1+json",required=true),
+     *   @SWG\Parameter(in="header",  name="Authorization",  type="string",  description="Token",required=true),
+     *   @SWG\Response(response="403", description="无权限"),
+     *   @SWG\Response(response="500", description=""),
+     * )
+     */
+    public function detail()
     {
         $user = auth()->guard('member')->user()->toArray();
-
-        $response = ['status' => 'Success', 'data' => $user, 'message' => 'Request Success!'];
-
-        return response($response);
+        return apiReturn([$user]);
     }
 }

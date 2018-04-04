@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     /**
      * @SWG\Post(path="/index.php/api/employee/auth/register",
-     *   tags={"employer/auth"},
+     *   tags={"employee/auth"},
      *   summary="普通注册",
      *   description="普通注册",
      *   operationId="register",
@@ -37,32 +37,11 @@ class AuthController extends Controller
         }
         return apiReturn($res['data']);
 
-        /*if (Member::where('user_name', request()->input('user_name'))->first()) {
-            $response = ['status' => 'Error', 'message' => 'User Already Exists!'];
-
-            return response($response, 400);
-        }
-
-        if ( ! $user = Member::create(request()->all())) {
-            $response = ['status' => 'Error', 'message' => 'Unknown'];
-
-            return response($response, 400);
-        }
-
-        $token = auth()->guard('member')->attempt(request()->all());
-
-        $response = [
-            'status'  => 'Success',
-            'data'    => $token,
-            'message' => 'Request Success!',
-        ];
-
-        return response($response);*/
     }
 
     /**
      * @SWG\Post(path="/index.php/api/employee/auth/register/fb",
-     *   tags={"employer/auth"},
+     *   tags={"employee/auth"},
      *   summary="Facebook注册",
      *   description="Facebook注册",
      *   operationId="register/fb",
@@ -93,7 +72,7 @@ class AuthController extends Controller
 
     /**
      * @SWG\Post(path="/index.php/api/employee/auth/register/google",
-     *   tags={"employer/auth"},
+     *   tags={"employee/auth"},
      *   summary="google注册",
      *   description="google注册",
      *   operationId="register/google",
@@ -124,7 +103,7 @@ class AuthController extends Controller
 
     /**
      * @SWG\Post(path="/index.php/api/employee/auth/login",
-     *   tags={"employer/auth"},
+     *   tags={"employee/auth"},
      *   summary="登录",
      *   description="登录",
      *   operationId="login",
@@ -150,7 +129,7 @@ class AuthController extends Controller
 
     /**
      * @SWG\Post(path="/index.php/api/employee/auth/login/fb",
-     *   tags={"employer/auth"},
+     *   tags={"employee/auth"},
      *   summary="Facebook登录",
      *   description="Facebook登录",
      *   operationId="login/fb",
@@ -175,7 +154,7 @@ class AuthController extends Controller
 
     /**
      * @SWG\Post(path="/index.php/api/employee/auth/login/google",
-     *   tags={"employer/auth"},
+     *   tags={"employee/auth"},
      *   summary="Google登录",
      *   description="Google登录",
      *   operationId="login/google",

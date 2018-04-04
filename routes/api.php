@@ -26,6 +26,11 @@ $api->version('v1', function ($api) {
         $api->post('auth/login',   'App\Api\V1\Controllers\Member\AuthController@login');
         $api->post('auth/login/fb',   'App\Api\V1\Controllers\Member\AuthController@loginForFacebook');
         $api->post('auth/login/google',   'App\Api\V1\Controllers\Member\AuthController@loginForGoogle');
+
+        $api->group(['middleware'=>'api.auth'], function($api) {
+            $api->get('profile/detail',   'App\Api\V1\Controllers\Member\ProfileController@detail');
+        });
+
         //雇主申请
         $api->post('auth/apply','App\Api\V1\Controllers\Member\AuthController@applyEmployer');
     });
