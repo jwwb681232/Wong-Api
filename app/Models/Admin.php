@@ -6,25 +6,25 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class MerchantUser extends Authenticatable implements JWTSubject
+class Admin extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
-    protected $guard = 'merchant';
+    protected $guard = 'employer';
 
 
     /**
      * 表名
      * @var string
      */
-    protected $table = 'wong_merchant_users';
+    protected $table = 'admins';
 
 
     /**
      * 主键
      * @var string
      */
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'id';
 
 
     /**
@@ -39,9 +39,7 @@ class MerchantUser extends Authenticatable implements JWTSubject
     /**
      * @var array
      */
-    protected $fillable = [
-        'user_name', 'user_mobile','user_password','user_add_time'
-    ];
+    protected $fillable = ['name', 'email', 'password', 'remember_token', 'created_at', 'updated_at', 'type', 'has_employer', 'status'];
 
 
     public $timestamps = false;

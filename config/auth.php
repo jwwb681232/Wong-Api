@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'user',
+        'guard' => 'member',
         'passwords' => 'users',
     ],
 
@@ -41,14 +41,14 @@ return [
             'provider' => 'users',
         ],
 
-        'user' => [
+        'member' => [
             'driver' => 'jwt',
-            'provider' => 'users',
+            'provider' => 'member',
         ],
 
-        'merchant' => [
+        'employer' => [
             'driver' => 'jwt',
-            'provider' => 'merchants',
+            'provider' => 'employer',
         ],
     ],
 
@@ -70,14 +70,14 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'EloquentUser',
-            'model' => App\Models\User::class,
+        'member' => [
+            'driver' => 'EloquentMember',
+            'model' => App\Models\Member::class,
         ],
 
-        'merchants' => [
-            'driver' => 'EloquentMerchantUser',
-            'model' => App\Models\MerchantUser::class,
+        'employer' => [
+            'driver' => 'EloquentEmployer',
+            'model' => App\Models\Admin::class,
         ],
 
         // 'users' => [

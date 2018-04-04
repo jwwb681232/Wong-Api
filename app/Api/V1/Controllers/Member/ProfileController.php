@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\V1\Controllers\User;
+namespace App\Api\V1\Controllers\Member;
 
 use App\Http\Controllers\Controller;
 
@@ -23,7 +23,7 @@ class ProfileController extends Controller
 
     public function me()
     {
-        $user = auth()->guard('user')->user()->toArray();
+        $user = auth()->guard('member')->user()->toArray();
 
         $response = ['status' => 'Success', 'data' => $user, 'message' => 'Request Success!'];
 

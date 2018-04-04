@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+//v1s1
+Route::group([],function(){
+    //apidoc
+    Route::get('apidoc/v1/employee/json', '\App\Api\V1\Controllers\Member\SwaggerController@getJson');
 });

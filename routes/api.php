@@ -17,18 +17,12 @@ $api = app(Dingo\Api\Routing\Router::class);
 
 $api->version('v1', function ($api) {
 
-    $api->group(['middleware'=>'api','prefix'=>'users'],function ($api){
-        $api->post('auth/login',   'App\Api\V1\Controllers\User\AuthController@login');
-        $api->post('auth/register','App\Api\V1\Controllers\User\AuthController@register');
+    $api->group(['middleware'=>'api','prefix'=>'employee'],function ($api){
+        $api->post('auth/login',   'App\Api\V1\Controllers\Member\AuthController@login');
+        $api->post('auth/register','App\Api\V1\Controllers\Member\AuthController@register');
+        $api->post('auth/apply','App\Api\V1\Controllers\Member\AuthController@applyEmployer');
 
-        $api->get('profile/me',   'App\Api\V1\Controllers\User\ProfileController@me');
-    });
-
-    $api->group(['middleware'=>'api','prefix'=>'merchant'],function ($api){
-        $api->post('auth/login',   'App\Api\V1\Controllers\MerchantUser\AuthController@login');
-        $api->post('auth/register','App\Api\V1\Controllers\MerchantUser\AuthController@register');
-
-        $api->get('profile/me',   'App\Api\V1\Controllers\MerchantUser\ProfileController@me');
+        $api->get('profile/me',   'App\Api\V1\Controllers\Member\ProfileController@me');
 
     });
 });

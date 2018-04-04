@@ -2,11 +2,11 @@
 
 namespace App\Auth;
 
-use App\Models\MerchantUser;
+use App\Models\Member;
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 
-class EloquentMerchantUserProvider extends EloquentUserProvider
+class EloquentMemberProvider extends EloquentUserProvider
 {
     /**
      * 根据主键获取用户实例
@@ -16,7 +16,7 @@ class EloquentMerchantUserProvider extends EloquentUserProvider
      */
     public function retrieveById($identifier)
     {
-        return MerchantUser::find($identifier);
+        return Member::find($identifier);
     }
 
     /**

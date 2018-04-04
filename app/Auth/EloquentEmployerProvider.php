@@ -2,11 +2,11 @@
 
 namespace App\Auth;
 
-use App\Models\User;
-use Illuminate\Auth\EloquentUserProvider as UserProvider;
+use App\Models\Admin;
+use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 
-class EloquentUserProvider extends UserProvider
+class EloquentEmployerProvider extends EloquentUserProvider
 {
     /**
      * 根据主键获取用户实例
@@ -16,7 +16,7 @@ class EloquentUserProvider extends UserProvider
      */
     public function retrieveById($identifier)
     {
-        return User::find($identifier);
+        return Admin::find($identifier);
     }
 
     /**
