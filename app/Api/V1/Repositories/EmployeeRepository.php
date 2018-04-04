@@ -141,6 +141,12 @@ class EmployeeRepository extends BaseRepository
         return ['error' => 1, 'msg' => 'Invalid Social Account'];
     }
 
+    /**
+     * 普通登录
+     * @param $request
+     *
+     * @return array
+     */
     public function login($request)
     {
         $member = $this->findWhere(['member_nric'=>$request['nric_no']])->first();
@@ -158,6 +164,52 @@ class EmployeeRepository extends BaseRepository
 
         return ['error' => 1, 'msg' => 'Please check your credentials or sign up.'];
 
+    }
+
+    /**
+     * 脸书登录
+     * @param $request
+     *
+     * @return array
+     */
+    public function loginForFacebook($request)
+    {
+        $member = $this->findWhere(['social_fb_id' => $request['social_fb_id']])->first();
+        $fbUser = $this->getFacebookUser($request['social_access_token']);
+        if ( ! empty($member['social_fb_id']) || ! empty($member)) {
+            if ($fbUser['status_code'] == 200) {
+                $token = auth()->guard('member')->attempt(['member_id' => $member->member_id]);
+
+                return ['error' => 0, 'data' => $token, 'msg' => 'Login successful'];
+            } else {
+                return ['error' => 1, 'msg' => 'Please check your credentials or sign up.'];
+            }
+        } else {
+            return ['error' => 1, 'msg' => 'Please check your credentials or sign up.'];
+        }
+    }
+
+    /**
+     * 谷歌登录
+     * @param $request
+     *
+     * @return array
+     */
+    public function loginForGoogle($request)
+    {
+        $member = $this->findWhere(['social_google_id' => $request['social_google_id']])->first();
+        $googleUser = $this->getGoogleUser($request['social_access_token']);
+        if ( ! empty($member['social_google_id']) || ! empty($member)) {
+            if ($googleUser['status_code'] == 200) {
+                $token = auth()->guard('member')->attempt(['member_id' => $member->member_id]);
+
+                return ['error' => 0, 'data' => $token, 'msg' => 'Login successful'];
+            } else {
+                return ['error' => 1, 'msg' => 'Please check your credentials or sign up.'];
+            }
+        } else {
+            return ['error' => 1, 'msg' => 'Please check your credentials or sign up.'];
+        }
     }
 
     /**

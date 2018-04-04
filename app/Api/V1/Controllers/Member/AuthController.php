@@ -146,7 +146,56 @@ class AuthController extends Controller
             return apiReturn([], 403, $res['msg']);
         }
         return apiReturn($res['data']);
+    }
 
+    /**
+     * @SWG\Post(path="/index.php/api/employee/auth/login/fb",
+     *   tags={"employer/auth"},
+     *   summary="Facebook登录",
+     *   description="Facebook登录",
+     *   operationId="login/fb",
+     *   consumes={"application/x-www-form-urlencoded"},
+     *   @SWG\Parameter(in="formData",  name="social_fb_id",type="string",  description="facebook id", required=true),
+     *   @SWG\Parameter(in="formData",  name="social_access_token",type="string",  description="第三方token", required=true),
+     *   @SWG\Parameter(in="header",  name="Content-Type",  type="string",  description="application/x-www-form-urlencoded", default="application/x-www-form-urlencoded",required=true),
+     *   @SWG\Parameter(in="header",  name="Accept",  type="string",  description="版本号", default="application/x.yyjobs-api.v1+json",required=true),
+     *   @SWG\Response(response="403", description="无权限"),
+     *   @SWG\Response(response="500", description=""),
+     * )
+     */
+    public function loginForFacebook()
+    {
+        $employeeRep = app(EmployeeRepository::class);
+        $res = $employeeRep->loginForFacebook(request()->all());
+        if ($res['error']){
+            return apiReturn([], 403, $res['msg']);
+        }
+        return apiReturn($res['data']);
+    }
+
+    /**
+     * @SWG\Post(path="/index.php/api/employee/auth/login/google",
+     *   tags={"employer/auth"},
+     *   summary="Google登录",
+     *   description="Google登录",
+     *   operationId="login/google",
+     *   consumes={"application/x-www-form-urlencoded"},
+     *   @SWG\Parameter(in="formData",  name="social_google_id",type="string",  description="facebook id", required=true),
+     *   @SWG\Parameter(in="formData",  name="social_access_token",type="string",  description="第三方token", required=true),
+     *   @SWG\Parameter(in="header",  name="Content-Type",  type="string",  description="application/x-www-form-urlencoded", default="application/x-www-form-urlencoded",required=true),
+     *   @SWG\Parameter(in="header",  name="Accept",  type="string",  description="版本号", default="application/x.yyjobs-api.v1+json",required=true),
+     *   @SWG\Response(response="403", description="无权限"),
+     *   @SWG\Response(response="500", description=""),
+     * )
+     */
+    public function loginForGoogle()
+    {
+        $employeeRep = app(EmployeeRepository::class);
+        $res = $employeeRep->loginForGoogle(request()->all());
+        if ($res['error']){
+            return apiReturn([], 403, $res['msg']);
+        }
+        return apiReturn($res['data']);
     }
 
     /**
