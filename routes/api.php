@@ -36,6 +36,8 @@ $api->version('v1', function ($api) {
             $api->get('job/list','App\Api\V1\Controllers\Member\JobController@lists');
             //工作详情
             $api->get('job/detail','App\Api\V1\Controllers\Member\JobController@detail');
+            //工作申请
+            $api->post('job/apply','App\Api\V1\Controllers\Member\JobSchedulesController@apply');
         });
 
         //雇主申请
