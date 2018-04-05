@@ -31,14 +31,17 @@ $api->version('v1', function ($api) {
             $api->get('profile/detail',   'App\Api\V1\Controllers\Member\ProfileController@detail');
             $api->post('profile/edit',   'App\Api\V1\Controllers\Member\ProfileController@edit');
             $api->post('profile/edit_additional',   'App\Api\V1\Controllers\Member\ProfileController@editAdditional');
+
+            //工作列表
+            $api->get('job/list','App\Api\V1\Controllers\Member\JobController@list');
         });
 
         //雇主申请
         $api->post('auth/apply','App\Api\V1\Controllers\Member\AuthController@applyEmployer');
         //行业列表
-        $api->post('extra/industry','App\Api\V1\Controllers\ExtraController@industry');
+        $api->get('extra/industry','App\Api\V1\Controllers\ExtraController@industry');
         //学校列表
-        $api->post('extra/school','App\Api\V1\Controllers\ExtraController@school');
+        $api->get('extra/school','App\Api\V1\Controllers\ExtraController@school');
     });
 
 });
