@@ -33,7 +33,7 @@ class Member extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'member_password',
+        //'member_password',
     ];
 
     /**
