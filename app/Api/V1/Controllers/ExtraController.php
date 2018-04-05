@@ -9,7 +9,7 @@ class ExtraController extends Controller
 {
 
     /**
-     * @SWG\Post(path="/index.php/api/employee/extra/industry",
+     * @SWG\Get(path="/index.php/api/employee/extra/industry",
      *   tags={"employee/extra"},
      *   summary="行业列表",
      *   description="行业列表",
@@ -28,7 +28,7 @@ class ExtraController extends Controller
     }
 
     /**
-     * @SWG\Post(path="/index.php/api/employee/extra/school",
+     * @SWG\Get(path="/index.php/api/employee/extra/school",
      *   tags={"employee/extra"},
      *   summary="学校列表",
      *   description="学校列表",
