@@ -33,7 +33,9 @@ $api->version('v1', function ($api) {
             $api->post('profile/edit_additional',   'App\Api\V1\Controllers\Member\ProfileController@editAdditional');
 
             //工作列表
-            $api->get('job/list','App\Api\V1\Controllers\Member\JobController@list');
+            $api->get('job/list','App\Api\V1\Controllers\Member\JobController@lists');
+            //工作详情
+            $api->get('job/detail','App\Api\V1\Controllers\Member\JobController@detail');
         });
 
         //雇主申请
