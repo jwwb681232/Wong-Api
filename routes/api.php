@@ -38,6 +38,16 @@ $api->version('v1', function ($api) {
             $api->get('job/detail','App\Api\V1\Controllers\Member\JobController@detail');
             //工作申请
             $api->post('job/apply','App\Api\V1\Controllers\Member\JobSchedulesController@apply');
+            //工作计划列表
+            $api->get('job/schedules/list','App\Api\V1\Controllers\Member\JobSchedulesController@lists');
+            //工作签入详情
+            $api->get('job/schedules/detail','App\Api\V1\Controllers\Member\JobSchedulesController@detail');
+            //工作签入
+            $api->post('job/schedules/checkin','App\Api\V1\Controllers\Member\JobSchedulesController@checkin');
+            //工作签出
+            $api->post('job/schedules/checkout','App\Api\V1\Controllers\Member\JobSchedulesController@checkout');
+            //取消工作计划
+            $api->post('job/schedules/cancel','App\Api\V1\Controllers\Member\JobSchedulesController@cancel');
         });
 
         //雇主申请

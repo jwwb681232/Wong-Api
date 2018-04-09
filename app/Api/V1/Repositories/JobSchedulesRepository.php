@@ -223,4 +223,186 @@ class JobSchedulesRepository extends BaseRepository
 
         return $this->create($schedules);
     }
+
+    public function search($curPage, $pageSize, $memberId,$industryId,$startTime)
+    {
+        $offset = ($curPage - 1) * $pageSize;
+
+        $this->model = $this->model->leftJoin('job as j','job_schedules.job_id','j.job_id');
+
+        if ($memberId){
+            $this->model = $this->model->where('job_schedules.member_id',$memberId);
+        }
+
+        if ($industryId != ''){
+            $this->model = $this->model->where('j.job_industry_id',$industryId);
+        }
+
+        if ($startTime > 0){
+            $this->model = $this->model->where('j.job_start_date','>',$startTime);
+        }
+
+        $count = $this->model->count();
+
+        $countPage = ceil($count / $pageSize);
+
+        $result = $this->model->offset($offset)->limit($pageSize)->orderBy('job_schedules.job_id','desc')->get()->toArray();
+
+        return [
+            'error' => 0,
+            'data'  => compact('countPage', 'count', 'curPage', 'pageSize', 'result'),
+        ];
+    }
+
+    public function detail($memberId)
+    {
+        $job = $this->model->leftJoin('job as j','job_schedules.job_id','j.job_id')
+            ->where('job_schedules.member_id',$memberId)
+            ->where('job_schedules.work_status',2)
+            ->where('j.job_start_date','>',time())
+            ->orderBy('j.job_start_date','asc')
+            ->first();
+        if ($job){
+            return ['error'=>0,'data'=>$job->toArray(),'msg'=>''];
+        }
+        return ['error'=>1,'msg'=>'No related work'];
+    }
+
+    public function cancel($request,$memberId,$schedulesId)
+    {
+        $schedules = $this->find($schedulesId);
+
+        if($schedules->cancel_status == 1){
+            return ['error'=>1,'msg'=>"This job has been cancelled and cannot be canceled repeatedly"];
+        }
+
+        $settingRep = app(SettingRepository::class);
+        $setting = $settingRep->first();
+        
+        $cancelHour = (time() - $schedules->add_time) / 3600;
+
+        $deduction = 0;
+        if ($cancelHour >= 72){
+            $deduction = $setting->credits_cancel_job_before_72_hours;
+        }
+        if ($cancelHour < 72 && $cancelHour > 0){
+            $deduction = $setting->credits_cancel_job_within_72_hours;
+        }
+
+        $scheduleData['cancel_status'] = 1;
+        $scheduleData['cancel_reason'] = $request->input('reason');
+
+
+        $fileRepository = app(FileRepository::class);
+        if ($request->file('file')){
+            $scheduleData['cancel_image'] = $fileRepository->imageReSize( request()->file('file'),generateFilePath());
+        }
+
+        $scheduleData['work_status'] = 9;
+
+        $this->update($scheduleData,$schedulesId);
+
+        \DB::table('member')->where('member_id',$memberId)->increment('member_credit',$deduction);
+
+        return ['error'=>0,'data'=>true,'msg'=>"Work cancelled, {$deduction} credit points deducted"];
+    }
+
+    /**
+     * 签入
+     * @param $memberId
+     * @param $schedulesId
+     * @param $latitude
+     * @param $longitude
+     * @param $address
+     *
+     * @return array
+     */
+    public function checkin($memberId, $schedulesId, $latitude, $longitude,$address)
+    {
+        $schedules = $this->find($schedulesId);
+        $jobRep = app(JobRepository::class);
+        $job = $jobRep->find($schedules->job_id);
+
+        //是否本人
+        if ($memberId != $schedules->member_id){
+            return ['error'=>1,'msg'=>'Illegal request.'];
+        }
+
+        //是否申请成功
+        if ($schedules->work_status != 2){
+            return ['error'=>1,'msg'=>'Please apply for the job and try again.'];
+        }
+
+
+        $schedulesData['member_current_lat'] = $latitude;
+        $schedulesData['member_current_long'] = $longitude;
+
+        //没有签入过就更新用户签入数据
+        if ($schedules->checkin_time == 0){
+            if ((time() - $job->job_start_date) / 3600 > 1) {
+                return ['error'=>1,'msg'=>'You can only check in an hour before the start of your job.'];
+            }
+
+            $schedulesData['checkin_time'] = time();
+            $schedulesData['checkin_address'] = $address;
+        }
+
+        $res = $this->update($schedulesData,$schedulesId);
+        if ($res){
+            return ['error'=>0,'data'=>$res];
+        }
+        return ['error'=>1,'msg'=>'Check in failed'];
+    }
+
+    /**
+     * 签出
+     * @param $member
+     * @param $schedulesId
+     * @param $latitude
+     * @param $longitude
+     * @param $address
+     *
+     * @return array
+     */
+    public function checkout($member, $schedulesId, $latitude, $longitude,$address)
+    {
+        $schedules = $this->find($schedulesId);
+        $jobRep    = app(JobRepository::class);
+        $job       = $jobRep->find($schedules->job_id);
+
+        //是否本人
+        if ($member->member_id != $schedules->member_id){
+            return ['error'=>1,'msg'=>'Illegal request.'];
+        }
+
+        //是否已经签入
+        if ($schedules->checkin_time == 0){
+            return ['error'=>1,'msg'=>'You have not checked in yet.'];
+        }
+
+
+        $schedulesData['member_current_lat'] = $latitude;
+        $schedulesData['member_current_long'] = $longitude;
+        $schedulesData['checkout_time'] = time();
+        $schedulesData['checkout_address'] = $address;
+        $schedulesData['work_hours'] = $this->getWorkHours($job);
+        $schedulesData['job_salary'] = $schedulesData['work_hours'] / 60 * $member->member_salary_rate;
+        $schedulesData['work_status'] = 5;
+
+        $res = $this->update($schedulesData,$schedulesId);
+        if ($res){
+            return ['error'=>0,'data'=>$res];
+        }
+
+        return ['error' => 1, 'msg' => 'Check out failed'];
+    }
+
+    private function getWorkHours($job)
+    {
+        $now   = time();
+        $start = $job->job_start_date;
+        $end   = $now < $job->job_end_date ? $now : $job->job_end_date;
+
+        return ($end - $start) / 60;
+    }
 }
